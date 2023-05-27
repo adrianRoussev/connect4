@@ -53,8 +53,14 @@ RSpec.describe Game do
     # obv need to incorporate the take turn methods before checking this
     # end 
 
-    # it "can keep track of turns" do 
+    # it "can alternate turns" do 
     # obv need to incorporate the take turn methods before checking this
     # end 
   end 
+
+  # describe "win conditions" do 
+  #   win conditions checks will go here 
+  # end 
+
+
 end 
