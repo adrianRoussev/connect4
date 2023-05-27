@@ -19,4 +19,12 @@ RSpec.describe Game do
       expect(game.greeting).to eq(nil)
     end 
   end 
+
+  describe "game flow methods" do 
+    it "can print board" do 
+    end 
+
+    it "can keep track of turn" do 
+    end 
+  end 
 end 
