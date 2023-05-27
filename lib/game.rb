@@ -1,9 +1,10 @@
 class Game
 
-  attr_reader :board
+  attr_reader :board, :turn
 
   def initialize
     @board = Board.new
+    @turn = :X
     @start = true 
   end
 
