@@ -37,10 +37,10 @@ RSpec.describe Game do
         . . . . . . .
         . . . . . . .
       BOARD
-
       expect(game.print_board).to eq(expected_output)
+      #also check the eye test using puts game.print_board
     end
-    
+
     # it "correctly prints placed pieces onto the board" do 
     # obv need to incorporate the take turn methods before checking this
     # end 
