@@ -4,40 +4,36 @@ class Turn
 
   def initialize(player, board)
     @player = player 
-    @column_input = 0
+    @column_input = nil
     @board = board
   end 
 
 
 
   def get_move
-    valid_columns = ('A'..'G').to_a
-    puts "#{player}, it's your turn. Enter a column (A-G) to make your move:"
-    input = gets.chomp
+    valid_columns = ("A".."G").to_a
+    "#{player}, it's your turn. Enter a column (A-G) to make your move:"
+    input = gets.chomp.upcase
   
-    until valid_columns.include?(input)
-      puts "Invalid column. Please enter a column (A-G):"
+    until input.is_a?(String) && valid_columns.include?(input.upcase)
+      "Invalid column. Please enter a column (A-G):"
       input = gets.chomp.upcase
     end
   
-    column_index = valid_columns.index(input)
-    @board.make_move(column_index, player)
+    column_index = valid_columns.index(input.upcase)
+    @board.make_move(column_index, @player)
   end
 
   def get_move_with_input(input)
-    # This is just for testing purposes since .gets was quite problematic to test.
-    # This will be identical to the method above aside from how input is enterted.
-    # This will be commented out once tests are passed so the real method can be used in game. 
+    #This is a method for test purposes, testing gets.chomp was quite difficult.
+    #I am thinking we can use this for the CPU turn though, with the computer logic method spitting out whatever "input" will be?
     valid_columns = ('A'..'G').to_a
-    puts "#{@player}, it's your turn. Enter a column (A-G) to make your move:"
-    
-    until valid_columns.include?(input)
+  
+    until input.is_a?(String) && valid_columns.include?(input.upcase)
       return "Invalid column."
     end
     
-    column_index = valid_columns.index(input)
+    column_index = valid_columns.index(input.upcase)
     @board.make_move(column_index, @player) 
-  end
-  
-    
+  end    
 end 
