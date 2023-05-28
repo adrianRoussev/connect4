@@ -1,6 +1,7 @@
 require 'pry'
 require './board'
 require './lib/game'
+require './lib/turn'
 
 RSpec.describe Game do 
   describe "initialize" do 
@@ -19,7 +20,7 @@ RSpec.describe Game do
       expect(game.greeting).to eq("Welcome to Connect 4!")
       expect(game.greeting).to eq(nil)
     end 
-    it "has an inital turn value of :X" do 
+    it "turn has an inital turn value of :X" do 
       game = Game.new
       expect(game.turn).to eq(:X)
     end 
@@ -29,7 +30,7 @@ RSpec.describe Game do
     it "can create new turns" do 
       game = Game.new
       turn = game.create_turn
-      expect(turn).to be_an_instance_of (Turn)
+      expect(turn).to be_an_instance_of(Turn)
     end
          
     it "can switch turn from :X or :O" do
@@ -57,14 +58,46 @@ RSpec.describe Game do
       #also check the eye test using puts
     end
 
-    # it "correctly prints placed pieces onto the board" do 
-    # obv need to incorporate the take turn methods before checking this
-    # end 
+    it "prints the board with a placed X marker" do
+      game = Game.new
+      game.board.make_move(0, :X)
+      expected_output = <<~BOARD
+        A B C D E F G
+        . . . . . . .
+        . . . . . . .
+        . . . . . . .
+        . . . . . . .
+        . . . . . . .
+        X . . . . . .
+      BOARD
+      expect(game.print_board).to eq(expected_output)
+      # also check the eye test using puts
+    end
+
+    it "prints the board with multiple moves" do 
+      game = Game.new
+      game.board.make_move(0, :X)
+      game.board.make_move(0, :O)
+      game.board.make_move(0, :X)
+      game.board.make_move(0, :O)
+      game.board.make_move(0, :X)
+      game.board.make_move(0, :O)
+      game.board.make_move(1, :X)
+      game.board.make_move(6, :O)
+      expected_output = <<~BOARD
+        A B C D E F G
+        O . . . . . .
+        X . . . . . .
+        O . . . . . .
+        X . . . . . .
+        O . . . . . .
+        X X . . . . O
+      BOARD
+      expect(game.print_board).to eq(expected_output)
+    end 
   end 
 
   # describe "win conditions" do 
   #   win conditions checks will go here 
   # end 
-
-
 end 
