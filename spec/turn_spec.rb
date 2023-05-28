@@ -29,21 +29,18 @@ RSpec.describe Turn do
   end
 
   describe "get_move method" do 
-    xit 'requests input from the player' do
+    it 'passes input from the player to the board' do
       game = Game.new
       turn = game.create_turn
-      input = 'A'
-      expect(turn.get_move_with_input(input)).to eq(0) 
+      input = "A"
+      expect(turn.get_move_with_input(input)).to eq(1) 
+      # +1, to accomodate the make_move return value in board class. 
+      input = "B"
+      expect(turn.get_move_with_input(input)).to eq(8) 
+      input = "C"
+      expect(turn.get_move_with_input(input)).to eq(15) 
     end
-    # This is the test that is perplexing me at the moment.
-    # A = 1 instead of 0 
-    # B = 8 instead of 7
-    # C = 15 instead of 14
 
-    # altering column_index = valid_columns.index(input) = or - 1 
-    # changes the value by 7. 
-
-  
     it "only accepts single entries of A-G as valid inputs" do 
       game = Game.new
       turn = game.create_turn
@@ -51,23 +48,18 @@ RSpec.describe Turn do
       expect(turn.get_move_with_input(input)).to eq("Invalid column.")
       input = "p"
       expect(turn.get_move_with_input(input)).to eq("Invalid column.")
-      input = ['A', "B"]
+      input = ["A", "B"]
       expect(turn.get_move_with_input(input)).to eq("Invalid column.")
     end
   
-    xit "can accept lowercase and uppercase entries of valid letters" do 
-
+    it "can accept lowercase and uppercase entries of valid letters" do 
       game = Game.new
       turn = game.create_turn
-      input = 'A'
-      expect(turn.get_move_with_input(input)).to eq(0) 
-      input = 'a'
-      expect(turn.get_move_with_input(input)).to eq(0) 
-    end 
-    #this will work once the other test is sorted. 
-
-    xit "correctly sends retrieved information to the board via make_move" do 
-    end 
+      input = "A"
+      expect(turn.get_move_with_input(input)).to eq(1) 
+      input = "b"
+      expect(turn.get_move_with_input(input)).to eq(8) 
+    end  
   end 
   
 end  
