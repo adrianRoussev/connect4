@@ -48,6 +48,7 @@ class Board
         else
             @current_position_ar[column] = position +1
         end
+    end 
 
         def free_spaces_count
             @total_positions = @marker_positions_bit[:X] |     @marker_positions_bit[:O]
