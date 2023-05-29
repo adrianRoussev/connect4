@@ -14,7 +14,7 @@
 # 0  7 14 21 28 35 42
 
 class Board
-    attr_reader :marker_positions_bit, :current_position_ar,:final_position_ar
+    attr_reader :marker_positions_bit, :current_position_ar,:final_position_ar, :rows, :columns
 
     def initialize
     @marker_positions_bit= {:X => 0b0, :O => 0b0}   #0b is added at the begining of the bit to indicate 
