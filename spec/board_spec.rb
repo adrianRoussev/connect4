@@ -11,6 +11,11 @@ RSpec.describe Board do
       expect(@board).to be_an_instance_of(Board)
     end 
 
+    it "board is the correct size" do 
+      bit_str = @board.full_board.to_s(2)
+      expect(bit_str.chars.count).to eq(49)
+    end 
+
     it "board and markers are initialized as bits" do
       expected = 0b1111110111111011111101111111011111101111110111111
 
