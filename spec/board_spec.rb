@@ -35,5 +35,17 @@ RSpec.describe Board do
       expect(@board.current_position_ar).to eq(current)
       expect(@board.final_position_ar).to eq(final)
     end 
+
+    xit "accomodates for extra row at the top which is not part of the playing board" do 
+      bit_str = @board.full_board.to_s(2)
+      bit_map = bit_str.chars.map {|char| [char]}
+      expect(bit_map[6].join.reverse).to eq ("0")
+      expect(bit_map[13].join).to eq ("0")
+      expect(bit_map[20].join).to eq ("0")
+      expect(bit_map[27].join).to eq ("0")
+      expect(bit_map[34].join).to eq ("0")
+      expect(bit_map[41].join).to eq ("0")
+      expect(bit_map[48].join).to eq ("0")
+    end 
   end 
 end 
