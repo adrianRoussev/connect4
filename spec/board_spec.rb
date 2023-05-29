@@ -96,5 +96,49 @@ RSpec.describe Board do
       expect(@board.connect4?(:X)).to be true 
     end 
 
+    it "can check for connect 4 horizontally" do 
+      @board.make_move(0, :X)
+      @board.make_move(1, :X)
+      @board.make_move(2, :X)
+      @board.make_move(3, :X)
+      expect(@board.connect4?(:X)).to be true 
+    end 
+
+    it "can check for connect 4 diagonally up" do 
+      @board.make_move(0, :X)
+
+      @board.make_move(1, :O)
+      @board.make_move(1, :X)
+
+      @board.make_move(2, :O)
+      @board.make_move(2, :O)
+      @board.make_move(2, :X)
+
+      @board.make_move(3, :O)
+      @board.make_move(3, :O)
+      @board.make_move(3, :O)
+      @board.make_move(3, :X)
+
+      expect(@board.connect4?(:X)).to be true 
+    end 
+
+    it "can check for connect 4 diagonally down" do 
+      @board.make_move(0, :O)
+      @board.make_move(0, :O)
+      @board.make_move(0, :O)
+      @board.make_move(0, :X)
+
+      @board.make_move(1, :O)
+      @board.make_move(1, :O)
+      @board.make_move(1, :X)
+
+      @board.make_move(2, :O)
+      @board.make_move(2, :X)
+
+      @board.make_move(3, :X)
+
+      expect(@board.connect4?(:X)).to be true 
+    end 
+
   end 
 end 
