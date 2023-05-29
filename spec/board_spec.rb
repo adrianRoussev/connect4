@@ -51,11 +51,10 @@ RSpec.describe Board do
 
   describe "instance methods" do
     it "make_move places markers in the correct column" do
-      board = Board.new
-      board.make_move(0, :X)
-      board.make_move(0, :O)
-      expect(board.marker_positions_bit[:X]).to eq(0b001)
-      expect(board.marker_positions_bit[:O]).to eq(0b010)
+      @board.make_move(0, :X)
+      @board.make_move(0, :O)
+      expect(@board.marker_positions_bit[:X]).to eq(0b001)
+      expect(@board.marker_positions_bit[:O]).to eq(0b010)
     end
 
     it "free_spaces_count counts number of free spaces" do 
@@ -82,7 +81,7 @@ RSpec.describe Board do
       5.times {@board.make_move(6, :X)}
       @board.free_spaces_count
       expect(@board.board_full?).to be false 
-      
+
       @board.make_move(6, :X)
       @board.free_spaces_count
       expect(@board.board_full?).to be true  
