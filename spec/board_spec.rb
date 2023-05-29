@@ -13,11 +13,12 @@ RSpec.describe Board do
 
     it "board is the correct size" do 
       bit_str = @board.full_board.to_s(2)
-      expect(bit_str.chars.count).to eq(49)
+      expect(bit_str.chars.count).to eq(48)
+      #48 since its reading the first 0 as nil in the string. 
     end 
 
     it "board and markers are initialized as bits" do
-      expected = 0b1111110111111011111101111111011111101111110111111
+      expected = 0b0111111011111101111110111111011111101111110111111
 
       expect(@board.marker_positions_bit[:X]).to eq(0b0)
       expect(@board.marker_positions_bit[:O]).to eq(0b0)
@@ -36,16 +37,25 @@ RSpec.describe Board do
       expect(@board.final_position_ar).to eq(final)
     end 
 
-    xit "accomodates for extra row at the top which is not part of the playing board" do 
+    it "accomodates for extra row at the top which is not part of the playing board" do 
       bit_str = @board.full_board.to_s(2)
       bit_map = bit_str.chars.map {|char| [char]}
-      expect(bit_map[6].join.reverse).to eq ("0")
+      expect(bit_map[6].join).to eq ("0")
       expect(bit_map[13].join).to eq ("0")
       expect(bit_map[20].join).to eq ("0")
       expect(bit_map[27].join).to eq ("0")
       expect(bit_map[34].join).to eq ("0")
       expect(bit_map[41].join).to eq ("0")
-      expect(bit_map[48].join).to eq ("0")
     end 
+  end 
+
+  describe "make_move" do
+    it "places markers in the correct column" do
+      board = Board.new
+      board.make_move(0, :X)
+      board.make_move(0, :O)
+      expect(board.marker_positions_bit[:X]).to eq(0b001)
+      expect(board.marker_positions_bit[:O]).to eq(0b010)
+    end
   end 
 end 
