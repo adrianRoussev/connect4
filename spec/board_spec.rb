@@ -86,5 +86,15 @@ RSpec.describe Board do
       @board.free_spaces_count
       expect(@board.board_full?).to be true  
     end 
+  end
+  describe "win conditions" do 
+    it "can check for connect 4 vertically" do 
+      @board.make_move(0, :X)
+      @board.make_move(0, :X)
+      @board.make_move(0, :X)
+      @board.make_move(0, :X)
+      expect(@board.connect4?(:X)).to be true 
+    end 
+
   end 
 end 
