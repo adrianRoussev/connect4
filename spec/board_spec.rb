@@ -67,5 +67,16 @@ RSpec.describe Board do
       expect(@board.free_spaces_count).to eq(36)
       expect(@board.marker_positions_bit[:X]).to eq(0b111111)
     end 
+
+    it "board_full returns correct value" do 
+      expect(@board.board_full?).to be false 
+      6.times {@board.make_move(0, :X)}
+      6.times {@board.make_move(1, :X)}
+      6.times {@board.make_move(2, :X)}
+      6.times {@board.make_move(3, :X)}
+      6.times {@board.make_move(4, :X)}
+      6.times {@board.make_move(5, :X)}
+      expect(@board.board_full?).to be false 
+    end 
   end 
 end 
