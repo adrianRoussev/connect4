@@ -23,5 +23,12 @@ RSpec.describe Board do
       expect(@board.rows).to eq(7)
       expect(@board.columns).to eq (7)
     end 
+
+    it "has the correct bit values for the current and final position arrays" do
+      current = [0, 7, 14, 21, 28, 35, 42]
+      final =  [5, 12, 19, 26, 33, 40, 47]
+      expect(@board.current_position_ar).to eq(current)
+      expect(@board.final_position_ar).to eq(final)
+    end 
   end 
 end 
