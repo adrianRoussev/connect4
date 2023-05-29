@@ -48,9 +48,66 @@ class Board
         else
             @current_position_ar[column] = position +1
         end
+
+        def free_spaces_count
+            @total_positions = @marker_positions_bit[:X] |     @marker_positions_bit[:O]
+            @empty_positions = @total_positions ^ @full_board
+            @empty_positions.to_s(2).count('1')
+        end
+
+
+        def board_full?
+        
+            @empty_positions == 0
+        end
     
+    
+        def connect4?(marker)
+            marker_positions = @marker_positions_bit[marker]
+            bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i
+            direction_shift_ar = [@horizontal, @vertical, @diagonal_up_right, @diagonal_down_left]
+        
+            direction_shift_ar.any? do |direction_shift|
+                @current_position_ar.each do |position|
+                bit_shift = bit_leading_0s_removed >> position
+                array = []
+        
+                i = 1
+                loop do
+                bit_shifted = bit_shift >> (i - 1)
+                marker_shift_1 = (bit_shift >> i) << 1
+        
+                    if marker_shift_1 == 0 && bit_shifted != 0
+                        array << 1
+                    elsif marker_shift_1 != 0 && bit_shifted % marker_shift_1 > 0
+                        array << 1
+                    else
+                        array.clear
+                    end
+        
+                    if direction_shift != 0
+                        i += direction_shift
+                    else
+                        break
+                    end
+        
+                    if array.count == 4 || ((bit_shift >> i) << 1) == 0
+                        break
+                    end
+                    end
+        
+                if array.count == 4
+                    return true
+                end
+            end
+        end
+    
+            false
     end
-end 
+        
+end
+
+
 
 #SOME RESOURCES: #the first link gives a very simple and easy to follow example of how this 
             #can be used for tic tac toe, (basically the same game on smaller scale)
