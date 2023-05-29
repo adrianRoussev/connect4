@@ -48,9 +48,48 @@ class Board
         else
             @current_position_ar[column] = position +1
         end
+
+        def free_spaces_count
+            @total_positions = @marker_positions_bit[:X] |     @marker_positions_bit[:O]
+            @empty_positions = @total_positions ^ @full_board
+            @empty_positions.to_s(2).count('1')
+        end
+
+
+        def board_full?
+        
+            @empty_positions == 0
+        end
     
-    end
-end 
+    
+        def connect4?(marker)
+            marker_positions = @marker_positions_bit[marker]
+            # direction_shift_ar = [@horizontal, @vertical, @diagonal_up_right, @diagonal_down_left]
+            # direction_shift_ar.any? do |direction_shift|
+            #   if direction_shift != nil 
+    
+            bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i
+    
+            direction_shift = 7
+            
+            marker_shift_1 = ( bit_leading_0s_removed >> 1) <<1
+            neighbour_bit =  bit_leading_0s_removed >> direction_shift
+            neighbour_shift_1 = (neighbour_bit >> 1) <<1
+            next_neighbour_bit =neighbour_bit >> direction_shift 
+            next_neighbour_shift_1  =   (next_neighbour_bit >> 1) <<1
+            third_neighbour_bit = next_neighbour_bit >> direction_shift
+            third_neighbour_shift_1  =   (third_neighbour_bit >> 1) <<1
+    
+                if   bit_leading_0s_removed%marker_shift_1 > 0  && neighbour_bit%neighbour_shift_1 > 0 && next_neighbour_bit > 0 
+                    true
+                else
+                    false
+                end
+        
+            end
+        end
+
+
 
 #SOME RESOURCES: #the first link gives a very simple and easy to follow example of how this 
             #can be used for tic tac toe, (basically the same game on smaller scale)
