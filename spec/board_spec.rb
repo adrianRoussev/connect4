@@ -79,7 +79,13 @@ RSpec.describe Board do
       6.times {@board.make_move(3, :X)}
       6.times {@board.make_move(4, :X)}
       6.times {@board.make_move(5, :X)}
+      5.times {@board.make_move(6, :X)}
+      @board.free_spaces_count
       expect(@board.board_full?).to be false 
+      
+      @board.make_move(6, :X)
+      @board.free_spaces_count
+      expect(@board.board_full?).to be true  
     end 
   end 
 end 
