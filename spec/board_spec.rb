@@ -61,5 +61,11 @@ RSpec.describe Board do
     it "free_spaces_count counts number of free spaces" do 
       expect(@board.free_spaces_count).to eq(42)
     end 
+
+    it "make_move can only add 6 markers to one column" do 
+      7.times {@board.make_move(0, :X)}
+      expect(@board.free_spaces_count).to eq(36)
+      expect(@board.marker_positions_bit[:X]).to eq(0b111111)
+    end 
   end 
 end 
