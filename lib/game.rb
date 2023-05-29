@@ -25,14 +25,24 @@ class Game
   def print_board
     output = ""
     output += ("A".."G").to_a.join(" ") + "\n"
-
-    6.times do
-      row_output = ["."] * @board.columns
+  
+    6.times.reverse_each do |row|
+      row_output = []
+  
+      7.times.reverse_each do |column|
+        position = column * @board.columns + row
+        if @board.marker_positions_bit[:X] & (2**position) != 0
+          row_output.unshift("X")
+        elsif @board.marker_positions_bit[:O] & (2**position) != 0
+          row_output.unshift("O")
+        else
+          row_output.unshift(".")
+        end
+      end
+  
       output += row_output.join(" ") + "\n"
     end
-
     output
-
-    # will update to include marker locations for placed pieces once those methods within turn are up and running
   end
+  
 end 
