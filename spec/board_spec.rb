@@ -6,6 +6,7 @@ RSpec.describe Board do
   before do
     @board = Board.new
   end
+
   describe "initialize" do 
     it "exists" do 
       expect(@board).to be_an_instance_of(Board)
@@ -87,6 +88,7 @@ RSpec.describe Board do
       expect(@board.board_full?).to be true  
     end 
   end
+
   describe "win conditions" do 
     it "can check for connect 4 vertically" do 
       @board.make_move(0, :X)
