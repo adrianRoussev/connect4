@@ -19,7 +19,7 @@ class Board
     def initialize
     @marker_positions_bit= {:X => 0b0, :O => 0b0}   #0b is added at the begining of the bit to indicate 
                                                     #that it is a bit and not a decimal (regular) number
-    @full_board = 0b1111110111111011111101111111011111101111110111111
+    @full_board = 0b111111011111101111110111111011111101111110111111
     @columns = 7
     @rows = 7
     @horizontal = @columns
