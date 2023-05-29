@@ -14,7 +14,7 @@ RSpec.describe Board do
     it "board is the correct size" do 
       bit_str = @board.full_board.to_s(2)
       expect(bit_str.chars.count).to eq(48)
-      #48 since its reading the first 0 as nil in the string. 
+      #48 since we don't need the final 0 
     end 
 
     it "board and markers are initialized as bits" do
@@ -60,11 +60,12 @@ RSpec.describe Board do
 
     it "free_spaces_count counts number of free spaces" do 
       expect(@board.free_spaces_count).to eq(42)
+      6.times {@board.make_move(0, :X)}
+      expect(@board.free_spaces_count).to eq(36)
     end 
 
     it "make_move can only add 6 markers to one column" do 
       7.times {@board.make_move(0, :X)}
-      expect(@board.free_spaces_count).to eq(36)
       expect(@board.marker_positions_bit[:X]).to eq(0b111111)
     end 
 
