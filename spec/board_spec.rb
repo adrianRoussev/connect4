@@ -67,6 +67,8 @@ RSpec.describe Board do
     it "make_move can only add 6 markers to one column" do 
       7.times {@board.make_move(0, :X)}
       expect(@board.marker_positions_bit[:X]).to eq(0b111111)
+      bit_str = (@board.marker_positions_bit[:X]).to_s(2)
+      expect(bit_str.chars.count).to eq(6)
     end 
 
     it "board_full returns correct value" do 
