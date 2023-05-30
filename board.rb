@@ -14,12 +14,12 @@
 # 0  7 14 21 28 35 42
 
 class Board
-    attr_reader :marker_positions_bit, :current_position_ar,:final_position_ar, :rows, :columns
+    attr_reader :full_board, :marker_positions_bit, :current_position_ar,:final_position_ar, :rows, :columns
 
     def initialize
     @marker_positions_bit= {:X => 0b0, :O => 0b0}   #0b is added at the begining of the bit to indicate 
                                                     #that it is a bit and not a decimal (regular) number
-    @full_board = 0b1111110111111011111101111111011111101111110111111
+    @full_board = 0b111111011111101111110111111011111101111110111111
     @columns = 7
     @rows = 7
     @horizontal = @columns
@@ -48,6 +48,7 @@ class Board
         else
             @current_position_ar[column] = position +1
         end
+    end 
 
         def free_spaces_count
             @total_positions = @marker_positions_bit[:X] |     @marker_positions_bit[:O]
