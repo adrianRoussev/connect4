@@ -63,50 +63,85 @@ class Board
         end
     
     
-        def connect4?(marker)
+        def four_connected?(marker)
             marker_positions = @marker_positions_bit[marker]
-            bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i
-            direction_shift_ar = [@horizontal, @vertical, @diagonal_up_right, @diagonal_down_left]
-        
+            bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i(2)
+            direction_shift_ar = [@vertical,@horizontal, @diagonal_up_right, @diagonal_down_left]
+    
             direction_shift_ar.any? do |direction_shift|
-                @current_position_ar.each do |position|
-                bit_shift = bit_leading_0s_removed >> position
-                array = []
-        
-                i = 1
+                
+                n = 0
                 loop do
-                bit_shifted = bit_shift >> (i - 1)
-                marker_shift_1 = (bit_shift >> i) << 1
-        
-                    if marker_shift_1 == 0 && bit_shifted != 0
-                        array << 1
-                    elsif marker_shift_1 != 0 && bit_shifted % marker_shift_1 > 0
-                        array << 1
+                bit_shift = bit_leading_0s_removed >> n
+                @array = []
+                
+                i = 0
+                loop do
+                bit_shifted = bit_shift >> (i)
+                marker_shift_1 = (bit_shifted >> 1) << 1
+                if marker_shift_1 != 0
+                    if   bit_shifted % marker_shift_1 > 0 ||  bit_shifted == 1 
+                        @array << 1
                     else
-                        array.clear
+                        @array.clear
                     end
-        
-                    if direction_shift != 0
-                        i += direction_shift
-                    else
-                        break
+                elsif marker_shift_1 == 0 
+                    if bit_shifted != 0 
+                        @array << 1
+                    else 
+                        @array.clear
                     end
-        
-                    if array.count == 4 || ((bit_shift >> i) << 1) == 0
-                        break
-                    end
-                    end
-        
-                if array.count == 4
-                    return true
+                end
+                
+                i = i + direction_shift
+
+                if @array.count == 4 || ((bit_shifted >> 1) << 1) == 0
+                    break
                 end
             end
+                n = n + 1
+                
+                if @array.count == 4
+                    return true
+                end
+                
+                break if n >= 48 
+                end
+            end
+        
+            false
         end
     
-            false
-    end
+        def connect4?(marker)
+
+            marker_positions = marker_positions_bit[marker]
+            bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i(2)
         
-end
+            diag_up_winning_pattern = 0b1000000010000000100000001
+            horizontal_winning_pattern = 0b1000000100000010000001
+            diag_down_winning_pattern = 0b1000001000001000001
+            vertical_winning_pattern  = 0b1111
+        
+            winning_patterns_ar = [diag_up_winning_pattern, horizontal_winning_pattern, diag_down_winning_pattern, vertical_winning_pattern]
+        
+            winning_patterns_ar.any? do |win_pattern|
+                i = 0
+                loop do
+                    bit_shift = bit_leading_0s_removed >> i
+                    bit_and_winning = bit_shift & win_pattern
+        
+                    if bit_and_winning == win_pattern
+                        return true
+                    end
+        
+                    break if i >= 48 || bit_shift <= 0
+                    i += 1
+                    end
+                end
+            false
+            end
+        end
+
 
 
 
