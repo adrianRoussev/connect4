@@ -66,7 +66,7 @@ class Board
         def four_connected?(marker)
             marker_positions = @marker_positions_bit[marker]
             bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i(2)
-            direction_shift_ar = [@vertical,@horizontal, @diagonal_up_right, @diagonal_down_left]
+            direction_shift_ar = [@verticle, @horizontal, @diagonal_up_right, @diagonal_down_left]
     
             direction_shift_ar.any? do |direction_shift|
                 
