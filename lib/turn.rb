@@ -36,3 +36,5 @@ class Turn
             0
         end
 
+        opponent_marker = marker == :X ? :O : :X
+        available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
