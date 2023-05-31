@@ -36,6 +36,7 @@ class Turn
 
     column_index = valid_columns.index(input.upcase)
     @board.make_move(column_index, @player) 
+    end 
 
     def make_turn(marker)
         best_move = predict_best_move(marker)
