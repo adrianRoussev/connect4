@@ -29,5 +29,10 @@ class Turn
         best_move
     end
 
-
+    def evaluate_move(board, marker, depth, alpha, beta)
+        if board.connect4?(marker)
+            marker == :X ? 1 : -1
+        elsif board.board_full? || depth.zero?
+            0
+        end
 
