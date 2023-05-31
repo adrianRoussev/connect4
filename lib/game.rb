@@ -44,6 +44,42 @@ class Game
     end
     output
   end
+
+  def play
+    greeting
+    while true
+      system("clear")
+      puts print_board
+      turn = create_turn
+      turn.get_move
+      if @board.four_connected?(@turn) || @board.connect4?(@turn)
+        puts "#{@turn} is the winner!"
+        @next_start_player = (@turn == :X) ? :O : :X
+        break
+      elsif @board.board_full?
+        puts "The game is a draw."
+        @next_start_player = (@turn == :X) ? :O : :X
+        break
+      else
+        switch_turn
+      end
+    end
+    play_again
+  end
   
-  
+  def play_again
+    puts "Would you like to play again? (Y/N)"
+    input = gets.chomp.upcase
+    if input == "Y"
+      @board = Board.new
+      @turn = @next_start_player
+      @start = true
+      play
+    elsif input == "N"
+      puts "Thanks for playing!"
+    else
+      puts "Invalid input. Please enter Y for yes or N for no."
+      play_again
+    end
+  end
 end 
