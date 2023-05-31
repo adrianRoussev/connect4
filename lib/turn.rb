@@ -43,3 +43,6 @@ class Turn
                 temp_board = board.dup
                 temp_board.make_move(move, marker)
                 alpha = [alpha, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].max
+                break if alpha >= beta
+            end
+            alpha
