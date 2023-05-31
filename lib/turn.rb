@@ -38,3 +38,8 @@ class Turn
 
         opponent_marker = marker == :X ? :O : :X
         available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
+        if marker == :X
+            available_moves.each do |move|
+                temp_board = board.dup
+                temp_board.make_move(move, marker)
+                alpha = [alpha, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].max
