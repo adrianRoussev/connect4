@@ -46,3 +46,14 @@ class Turn
                 break if alpha >= beta
             end
             alpha
+        else
+            available_moves.each do |move|
+                temp_board = board.dup
+                temp_board.make_move(move, marker)
+                beta = [beta, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].min
+                break if beta <= alpha
+            end
+            beta
+        end
+    end
+end
