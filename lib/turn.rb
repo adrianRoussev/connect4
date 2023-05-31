@@ -18,3 +18,16 @@ class Turn
         available_moves.each do |move|
             temp_board = board.dup
             temp_board.make_move(move, marker)
+            score = evaluate_move(temp_board, marker, 4, -Float::INFINITY, Float::INFINITY)
+        
+            if score > best_score
+                best_score = score
+                best_move = move
+            end
+        end
+
+        best_move
+    end
+
+
+
