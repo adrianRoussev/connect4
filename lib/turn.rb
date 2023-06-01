@@ -1,28 +1,16 @@
+
+require './board.rb'
+
+
 class Turn 
+    attr_reader :player, :column_input, :board  
 
-  attr_reader :player, :column_input, :board  
+def initialize( board)
 
-  def initialize(player, board)
-    @player = player 
-    @column_input = nil
     @board = board
   end 
 
 
-
-  def get_move
-    valid_columns = ("A".."G").to_a
-    "#{player}, it's your turn. Enter a column (A-G) to make your move:"
-    input = gets.chomp.upcase
-  
-    until input.is_a?(String) && valid_columns.include?(input.upcase)
-      "Invalid column. Please enter a column (A-G):"
-      input = gets.chomp.upcase
-    end
-  
-    column_index = valid_columns.index(input.upcase)
-    @board.make_move(column_index, @player)
-  end
 
   def get_move_with_input(input)
     #This is a method for test purposes, testing gets.chomp was quite difficult.
@@ -30,13 +18,14 @@ class Turn
     valid_columns = ('A'..'G').to_a
   
     until input.is_a?(String) && valid_columns.include?(input.upcase)
-      return "Invalid column."
+        return "Invalid column."
     end
     
 
     column_index = valid_columns.index(input.upcase)
     @board.make_move(column_index, @player) 
-
+    end
+    
     def make_turn(marker)
         best_move = predict_best_move(marker)
         board.make_move(best_move, marker)
@@ -89,3 +78,4 @@ class Turn
         end
     end
 end
+

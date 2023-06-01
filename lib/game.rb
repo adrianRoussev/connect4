@@ -1,34 +1,51 @@
-class Game
+require './turn.rb'
+require './board.rb'
 
-  attr_reader :board, :turn
+class Game
+  attr_reader :board, :turn, :player_marker, :computer_marker, :scores
 
   def initialize
+    @start = true
     @board = Board.new
-    @turn = :X
-    @start = true 
+    @player_marker = nil
+    @computer_marker = nil
+    @scores = []
   end
 
-  def greeting 
-    @start ? (@start = false; "Welcome to Connect 4!") : nil
-  end  
+  def greeting
+    @start ? (@start = false; puts "Welcome to Connect 4!") : nil
+  end
 
   def create_turn
-    Turn.new(@turn, @board)
+    Turn.new(@board)
   end
-  
 
   def switch_turn
     @turn = (@turn == :X) ? :O : :X
   end
 
+  def choose_marker
+    loop do
+      print "Choose your marker (X or O): "
+      marker = gets.chomp.upcase
+      marker_strings = ["X", "O"]
+      if marker_strings.include?(marker)
+        @player_marker = marker.to_sym
+        @computer_marker = (marker == 'X' ? 'O' : 'X').to_sym
+        break
+      else
+        puts "Invalid marker. Please choose 'X' or 'O'."
+      end
+    end
+  end
 
   def print_board
     output = ""
     output += ("A".."G").to_a.join(" ") + "\n"
-  
+
     6.times.reverse_each do |row|
       row_output = []
-  
+
       7.times.reverse_each do |column|
         position = column * @board.columns + row
         if @board.marker_positions_bit[:X] & (2**position) != 0
@@ -39,10 +56,111 @@ class Game
           row_output.unshift(".")
         end
       end
-  
+
       output += row_output.join(" ") + "\n"
     end
     output
   end
-  
-end 
+
+  def player_move
+    valid_columns = ("A".."G").to_a
+    puts "#{@player_marker}, it's your turn."
+    input = gets.chomp.upcase
+
+    until input.is_a?(String) && valid_columns.include?(input.upcase)
+      puts "Invalid column. Please enter a column (A-G):"
+      input = gets.chomp.upcase
+    end
+
+    column_index = valid_columns.index(input.upcase)
+    @board.make_move(column_index, @player_marker)
+  end
+
+  def computer_move
+    puts "Computer's turn!"
+    move = create_turn
+    selected_move = move.make_turn(@computer_marker)
+    @board.make_move(selected_move, @computer_marker)
+  end
+
+  def display_result
+    puts print_board
+
+    if @board.connect4?(@player_marker)
+      puts "Congratulations! You won!"
+    elsif @board.connect4?(@computer_marker)
+      puts "Computer wins! Better luck next time."
+    else
+      puts "It's a draw!"
+    end
+  end
+
+  def game_over?
+    @board.connect4?(@player_marker) || @board.connect4?(@computer_marker) || @board.board_full?
+  end
+
+  def play
+    greeting
+    choose_marker
+    puts "You are playing as '#{player_marker}'. Make your move by entering the column letter (A-G)."
+
+    loop do
+      system("clear")
+      puts print_board
+      player_move
+      break if game_over?
+
+      switch_turn
+      computer_move
+      break if game_over?
+
+      switch_turn 
+    end
+
+    display_result
+    update_scores
+    play_again
+  end
+
+  def play_again
+    puts "Would you like to play again? (Y/N)"
+    input = gets.chomp.upcase
+
+    if input == "Y"
+      @board = Board.new
+      @turn = @next_start_player
+      @start = true
+      play
+    elsif input == "N"
+      puts "Thanks for playing!"
+    else
+      puts "Invalid input. Please enter Y for yes or N for no."
+      play_again
+    end
+  end
+
+  def update_scores
+    winner = nil
+
+    if @board.connect4?(@player_marker)
+      winner = 'Player'
+    elsif @board.connect4?(@computer_marker)
+      winner = 'Computer'
+    end
+
+    @scores << { winner: winner, timestamp: Time.now }
+  end
+
+  def show_high_scores
+    puts "High Scores:"
+    if @scores.empty?
+      puts "No scores recorded yet."
+    else
+      @scores.each_with_index do |score, index|
+        puts "#{index + 1}. #{score[:winner]} - #{score[:timestamp]}"
+      end
+    end
+    puts
+  end
+end
+

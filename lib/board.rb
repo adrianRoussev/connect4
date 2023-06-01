@@ -32,12 +32,7 @@ class Board
 
     end 
 
-    #line 44 uses a ruby bitwise function called OR. It compares two bit patterns 
-    #of equal length and at each position assigns either 1 or 0 creating a new 
-    #bit pattern.It assigns 0 if both bits are 0, and if either contain 1 in that
-    #possition, 1 is assigned.This allows us to add the new bit pattern of the current 
-    #move to the existing moves. Later we will use some of the others like XAND to compare 
-    #:X and :O to winning combinations.
+    
     
     def make_move(column, marker)
         position = @current_position_ar.fetch(column)
@@ -66,7 +61,7 @@ class Board
         def four_connected?(marker)
             marker_positions = @marker_positions_bit[marker]
             bit_leading_0s_removed = marker_positions.to_s(2).sub(/0+$/, '').to_i(2)
-            direction_shift_ar = [@vertical,@horizontal, @diagonal_up_right, @diagonal_down_left]
+            direction_shift_ar = [@verticle, @horizontal, @diagonal_up_right, @diagonal_down_left]
     
             direction_shift_ar.any? do |direction_shift|
                 

@@ -1,5 +1,5 @@
 require 'pry'
-require './board'
+require './lib/board'
 require './lib/game'
 require './lib/turn'
 
@@ -94,10 +94,21 @@ RSpec.describe Game do
         X X . . . . O
       BOARD
       expect(game.print_board).to eq(expected_output)
-    end 
+    end
   end 
+  describe "play again" do
+     let(:game) { Game.new } 
+    it "can create a new board and start new game" do 
+      allow(game).to receive(:gets).and_return("Y")
+      original = game.instance_variable_get(:@board)
+      expect(game).to receive(:play)
+      game.play_again
+      expect(game.instance_variable_get(:@board)).not_to be(original)
+    end 
 
-  # describe "win conditions" do 
-  #   win conditions checks will go here 
-  # end 
+    it "only accepts Y and N as valid inputs" do 
+      allow(game).to receive(:gets).and_return("3", "N")
+      expect { game.play_again }.to output(/Invalid input. Please enter Y for yes or N for no./).to_stdout
+    end
+  end
 end 

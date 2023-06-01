@@ -1,5 +1,5 @@
 require 'pry'
-require './board'
+require './lib/board'
 
 
 RSpec.describe Board do 
@@ -91,22 +91,35 @@ RSpec.describe Board do
 
   describe "win conditions" do 
     it "can check for connect 4 vertically" do 
+      expect(@board.four_connected?(:X)).to be false 
+      expect(@board.connect4?(:X)).to be false  
+
       @board.make_move(0, :X)
       @board.make_move(0, :X)
       @board.make_move(0, :X)
       @board.make_move(0, :X)
+
       expect(@board.connect4?(:X)).to be true 
+      expect(@board.four_connected?(:X)).to be true 
     end 
 
     it "can check for connect 4 horizontally" do 
+      expect(@board.four_connected?(:X)).to be false 
+      expect(@board.connect4?(:X)).to be false  
+
       @board.make_move(0, :X)
       @board.make_move(1, :X)
       @board.make_move(2, :X)
       @board.make_move(3, :X)
+
       expect(@board.connect4?(:X)).to be true 
+      expect(@board.four_connected?(:X)).to be true 
     end 
 
     it "can check for connect 4 diagonally up" do 
+      expect(@board.four_connected?(:X)).to be false 
+      expect(@board.connect4?(:X)).to be false  
+
       @board.make_move(0, :X)
 
       @board.make_move(1, :O)
@@ -122,9 +135,13 @@ RSpec.describe Board do
       @board.make_move(3, :X)
 
       expect(@board.connect4?(:X)).to be true 
+      expect(@board.four_connected?(:X)).to be true 
     end 
 
     it "can check for connect 4 diagonally down" do 
+      expect(@board.four_connected?(:X)).to be false 
+      expect(@board.connect4?(:X)).to be false  
+
       @board.make_move(0, :O)
       @board.make_move(0, :O)
       @board.make_move(0, :O)
@@ -140,7 +157,7 @@ RSpec.describe Board do
       @board.make_move(3, :X)
 
       expect(@board.connect4?(:X)).to be true 
+      expect(@board.four_connected?(:X)).to be true 
     end 
-
   end 
 end 
