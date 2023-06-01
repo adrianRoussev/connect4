@@ -89,8 +89,7 @@ class Game
   #   sleep(3)
     def computer_move
       best_move = @turn.predict_best_move(:O)
-      column = best_move
-      @board.make_move(column, :O)
+      @board.make_move(best_move, :O)
     end
 
   def display_result
@@ -144,7 +143,7 @@ def round
     loop do
       round
      display_result
-      break unless player_continues?
+      break unless play_again?
     end
     puts 'Thanks for playing!'
   end

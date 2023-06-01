@@ -51,6 +51,10 @@ class Board
             @empty_positions.to_s(2).count('1')
         end
 
+        def free_spaces
+            @empty_positions = @total_positions ^ @full_board
+            @empty_positions
+        end
 
         def board_full?
         
@@ -142,7 +146,7 @@ class Board
                 @current_position_ar[column] <= @final_position_ar[column]
               end
             
-            
+             
 
         end
 
