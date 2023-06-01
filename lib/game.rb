@@ -1,5 +1,5 @@
-require './turn.rb'
-require './board.rb'
+require './lib/board'
+require './lib/turn'
 
 class Game
   attr_reader :board, :turn, :player_marker, :computer_marker, :scores

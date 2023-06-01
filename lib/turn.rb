@@ -1,5 +1,6 @@
 
-require './board.rb'
+
+require './lib/board'
 
 
 class Turn 
