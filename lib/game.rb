@@ -127,6 +127,9 @@ def round
    else
     puts print_board
      computer_turn
+     if  @board.four_connected?(@player_marker) ==true || @board.four_connected?(@computer_marker) == true || @board.board_full? == true
+      break
+     end
     end
   end
 
