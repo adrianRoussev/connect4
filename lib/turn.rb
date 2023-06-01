@@ -35,67 +35,57 @@ def initialize( board)
       
 
       def predict_best_move(marker)
-        #     available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
-        #     best_move = available_moves.sample if available_moves.any?
-        #     best_move
-        #   end
-        # end
         available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
-      
-        best_move = nil
-        best_score = -Float::INFINITY
-      
-        available_moves.each do |move|
-          temp_board = board.dup
-          temp_board.make_move(move, marker)
-          score = evaluate_move(temp_board, marker, 4, -Float::INFINITY, Float::INFINITY)
-      
-          if score > best_score
-            best_score = score
-            best_move = move
+            best_move = available_moves.sample if available_moves.any?
+            best_move
           end
         end
+    #     available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
       
-        if best_move.nil?
-          best_move = available_moves.sample if available_moves.any?
-        end
+    #     best_move = nil
+    #     best_score = -Float::INFINITY
       
-        best_move
-      end
-      def evaluate_move(board, marker, depth, alpha, beta)
-        if board.connect4?(marker)
-          return marker == :X ? 1 : -1
-        elsif board.board_full? || depth.zero?
-          return 0
-        end
+    #     available_moves.each do |move|
+    #       temp_board = board.dup
+    #       temp_board.make_move(move, marker)
       
-        opponent_marker = marker == :X ? :O : :X
-        available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
+    #       score = evaluate_move(temp_board, marker, 4, -Float::INFINITY, Float::INFINITY)
+    #       if score > best_score
+    #         best_score = score
+    #         best_move = move
+    #       end
+    #     end
       
-        if marker == :X
-          available_moves.each do |move|
-            temp_board = board.dup
-            temp_board.make_move(move, marker)
+    #     best_move
+    #   end
       
-            column_index = move
-            column_depth = board.final_position_ar[column_index] - board.current_position_ar[column_index]
+    #   def evaluate_move(board, marker, depth, alpha, beta)
+       
+    #     if board.connect4?(marker)
+    #       return marker == :O ? 1 : -1
+    #     elsif board.board_full? || depth.zero?
+    #       return 0
+    #     end
       
-            alpha = [alpha, evaluate_move(temp_board, opponent_marker, column_depth, alpha, beta)].max
-            break if alpha >= beta
-          end
-          alpha
-        else
-          available_moves.each do |move|
-            temp_board = board.dup
-            temp_board.make_move(move, marker)
-      
-            column_index = move
-            column_depth = board.final_position_ar[column_index] - board.current_position_ar[column_index]
-      
-            beta = [beta, evaluate_move(temp_board, opponent_marker, column_depth, alpha, beta)].min
-            break if beta <= alpha
-          end
-          beta
-        end
-      end
-    end 
+    #     opponent_marker = marker == :X ? :O : :X
+    #     available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
+        
+    #     if marker == :O
+    #         board.free_spaces do |move|
+    #         temp_board = board.dup
+    #         temp_board.make_move(move, marker)
+    #         alpha = [alpha, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].max
+    #         break if alpha >= beta
+    #       end
+    #       alpha
+    #     else
+    #         board.free_spaces do |move|
+    #         temp_board = board.dup
+    #         temp_board.make_move(move, marker)
+    #         beta = [beta, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].min
+    #         break if beta <= alpha
+    #       end
+    #       beta
+    #     end
+    #   end
+    # end      
