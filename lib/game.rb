@@ -73,7 +73,18 @@ class Game
     board.make_move(selected_move, computer_marker)
   end
 
-  
+  def display_result
+    display_board
+
+    if board.connect4?(player_marker)
+      puts "GRUMBLE - You won this time....but you got lucky! - GRUMBLE"
+    elsif board.connect4?(computer_marker)
+      puts "I won! I told you no one can beat ME! - HAHAHA"
+    else
+      puts "DRAW - You didn't LOOSE but you didn't win either! I guess I can live with that.... "
+    end
+  end
+
 
   def play
     greeting
