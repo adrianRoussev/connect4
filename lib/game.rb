@@ -7,6 +7,7 @@ class Game
   def initialize
     @start = true
     @board = Board.new
+    @turn = Turn.new(@board)
     @player_marker = nil
     @computer_marker = nil
     @scores = []
@@ -21,7 +22,6 @@ class Game
   end
 
   def switch_turn
-    @turn = (@turn == :X) ? :O : :X
   end
 
   def choose_marker
@@ -31,7 +31,7 @@ class Game
       marker_strings = ["X", "O"]
       if marker_strings.include?(marker)
         @player_marker = marker.to_sym
-        @computer_marker = (marker == 'X' ? 'O' : 'X').to_sym
+        @computer_marker = (@player_marker == 'X' ? 'O' : 'X').to_sym
         break
       else
         puts "Invalid marker. Please choose 'X' or 'O'."
@@ -63,66 +63,108 @@ class Game
   end
 
   def player_move
-    valid_columns = ("A".."G").to_a
     puts "#{@player_marker}, it's your turn."
     input = gets.chomp.upcase
-
+    valid_columns = ("A".."G").to_a
+    column = valid_columns.index(input)
+    if @board.current_position_ar.fetch(column) == @board.final_position_ar.fetch(column)  
+      puts "Invalid column. Please enter a column (A-G):"
+      input = gets.chomp.upcase
+    end
     until input.is_a?(String) && valid_columns.include?(input.upcase)
       puts "Invalid column. Please enter a column (A-G):"
       input = gets.chomp.upcase
+     
     end
 
     column_index = valid_columns.index(input.upcase)
     @board.make_move(column_index, @player_marker)
   end
 
-  def computer_move
-    puts "Computer's turn!"
-    move = create_turn
-    selected_move = move.make_turn(@computer_marker)
-    @board.make_move(selected_move, @computer_marker)
-  end
+  # def computer_move
+  #   puts "Computer's turn!"
+ 
+  #   selected_move = turn.predict_best_move(@computer_marker)
+  #   @board.make_move(selected_move, @computer_marker)
+  #   sleep(3)
+    def computer_move
+      best_move = @turn.predict_best_move(:O)
+      column = best_move
+      @board.make_move(column, :O)
+    end
 
   def display_result
     puts print_board
-
-    if @board.connect4?(@player_marker)
+if game_over? 
+    if @board.four_connected?(@player_marker)
       puts "Congratulations! You won!"
-    elsif @board.connect4?(@computer_marker)
+    elsif @board.four_connected?(@computer_marker)
       puts "Computer wins! Better luck next time."
-    else
+    elsif board_full?
       puts "It's a draw!"
     end
   end
+  end
 
   def game_over?
-    @board.connect4?(@player_marker) || @board.connect4?(@computer_marker) || @board.board_full?
+    @board.four_connected?(@player_marker) || @board.four_connected?(@computer_marker) || board_full?
+  end
+  
+  
+  
+ 
+
+def round
+    @board = Board.new
+  greeting
+    choose_marker
+  puts print_board
+    puts "You will never beat me..."
+    sleep(2)
+   
+    loop do
+      puts print_board
+     player_turn 
+     if  @board.four_connected?(@player_marker) ==true || @board.four_connected?(@computer_marker) == true || @board.board_full? == true
+    break
+   else
+    puts print_board
+     computer_turn
+    end
+  end
+
+  
+    display_result
+    update_scores
+  show_high_scores
+  play_again?
   end
 
   def play
-    greeting
-    choose_marker
-    puts "You are playing as '#{player_marker}'. Make your move by entering the column letter (A-G)."
-
     loop do
-      system("clear")
-      puts print_board
-      player_move
-      break if game_over?
-
-      switch_turn
-      computer_move
-      break if game_over?
-
-      switch_turn 
+      round
+     display_result
+      break unless player_continues?
     end
-
-    display_result
-    update_scores
-    play_again
+    puts 'Thanks for playing!'
   end
 
-  def play_again
+  def computer_turn
+    system 'clear'
+  print_board
+    computer_move
+    sleep(2)
+  end
+
+def player_turn
+    system 'clear'
+  print_board
+    player_move
+    sleep(2)
+  end
+  
+
+  def play_again?
     puts "Would you like to play again? (Y/N)"
     input = gets.chomp.upcase
 
@@ -137,6 +179,28 @@ class Game
       puts "Invalid input. Please enter Y for yes or N for no."
       play_again
     end
+  end
+
+  def game_over?
+    if board.connect4?(player_marker)
+      puts "Congratulations! You win!"
+      true
+    elsif board.connect4?(computer_marker)
+      puts "Computer wins! Better luck next time!"
+      true
+    elsif board.board_full?
+      puts "It's a draw!"
+      true
+    else
+      false
+    end
+  end
+  
+  
+  
+  def reset_game
+    board.reset
+    puts "Starting a new game!"
   end
 
   def update_scores

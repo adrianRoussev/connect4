@@ -27,63 +27,76 @@ def initialize( board)
     @board.make_move(column_index, @player) 
     end
     
-    def make_turn
+    def make_turn(marker)
         column = predict_best_move(marker)
-        board.make_move(column, marker)
         column
+        board.make_move(column, marker)
+       
       end
       
 
-    def predict_best_move(marker)
-        available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
-        best_move = available_moves.first
-      
-        return best_move if available_moves.empty?
-      
-        best_score = -Float::INFINITY
-      
-        available_moves.each do |move|
-          temp_board = board.dup
-          temp_board.make_move(move, marker)
-          score = evaluate_move(temp_board, marker, 4, -Float::INFINITY, Float::INFINITY)
-      
-          if score > best_score
-            best_score = score
-            best_move = move
+      def predict_best_move(marker)
+            available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
+            best_move = available_moves.sample if available_moves.any?
+            best_move
           end
         end
+    #     available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
       
-        best_move
-      end
+    #     best_move = nil
+    #     best_score = -Float::INFINITY
       
-
-    def evaluate_move(board, marker, depth, alpha, beta)
-        if board.connect4?(marker)
-          return marker == :X ? 1 : -1
-        elsif board.board_full? || depth.zero?
-          return 0
-        end
+    #     available_moves.each do |move|
+    #       temp_board = board.dup
+    #       temp_board.make_move(move, marker)
+    #       score = evaluate_move(temp_board, marker, 4, -Float::INFINITY, Float::INFINITY)
       
-        opponent_marker = marker == :X ? :O : :X
-        available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
+    #       if score > best_score
+    #         best_score = score
+    #         best_move = move
+    #       end
+    #     end
       
-        if marker == :X
-          available_moves.each do |move|
-            temp_board = board.dup
-            temp_board.make_move(move, marker)
-            alpha = [alpha, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].max
-            break if alpha >= beta
-          end
-          alpha
-        else
-          available_moves.each do |move|
-            temp_board = board.dup
-            temp_board.make_move(move, marker)
-            beta = [beta, evaluate_move(temp_board, opponent_marker, depth - 1, alpha, beta)].min
-            break if beta <= alpha
-          end
-          beta
-        end
-      end
-    end   
-
+    #     if best_move.nil?
+    #       best_move = available_moves.sample if available_moves.any?
+    #     end
+      
+    #     best_move
+    #   end
+    #   def evaluate_move(board, marker, depth, alpha, beta)
+    #     if board.connect4?(marker)
+    #       return marker == :X ? 1 : -1
+    #     elsif board.board_full? || depth.zero?
+    #       return nil
+    #     end
+      
+    #     opponent_marker = marker == :X ? :O : :X
+    #     available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
+      
+    #     if marker == :X
+    #       available_moves.each do |move|
+    #         temp_board = board.dup
+    #         temp_board.make_move(move, marker)
+      
+    #         column_index = move
+    #         column_depth = temp_board.final_position_ar[column_index] - temp_board.current_position_ar[column_index]
+      
+    #         alpha = [alpha, evaluate_move(temp_board, opponent_marker, column_depth, alpha, beta)].max
+    #         break if alpha >= beta
+    #       end
+    #       alpha
+    #     else
+    #       available_moves.each do |move|
+    #         temp_board = board.dup
+    #         temp_board.make_move(move, marker)
+      
+    #         column_index = move
+    #         column_depth = temp_board.final_position_ar[column_index] - temp_board.current_position_ar[column_index]
+      
+    #         beta = [beta, evaluate_move(temp_board, opponent_marker, column_depth, alpha, beta)].min
+    #         break if beta <= alpha
+    #       end
+    #       beta
+    #     end
+    #   end
+    # end 
