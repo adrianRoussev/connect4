@@ -111,7 +111,7 @@ class Game
       system("clear")
       puts print_board
       turn = create_turn
-      turn.get_move
+      turn.player_move
       if @board.four_connected?(@turn) || @board.connect4?(@turn)
         puts "#{@turn} is the winner!"
         @next_start_player = (@turn == :X) ? :O : :X
