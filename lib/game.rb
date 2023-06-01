@@ -3,8 +3,7 @@ class Game
   attr_reader :board, :turn
 
   def initialize
-    @board = Board.new
-    @turn = :X
+    # @turn = :X
     @start = true 
     @board = Board.new
     @player_marker = nil
@@ -16,9 +15,9 @@ class Game
     @start ? (@start = false; "Welcome to Connect 4!") : nil
   end  
 
-  def create_turn
-    Turn.new(@turn, @board)
-  end
+  # def create_turn
+  #   Turn.new(@turn, @board)
+  # end
   
 
   def switch_turn
@@ -64,6 +63,20 @@ class Game
     output
   end
 
+  def player_move
+    valid_columns = ("A".."G").to_a
+    "#{player}, it's your turn. Enter a column (A-G) to make your move:"
+    input = gets.chomp.upcase
+  
+    until input.is_a?(String) && valid_columns.include?(input.upcase)
+      "Invalid column. Please enter a column (A-G):"
+      input = gets.chomp.upcase
+    end
+  
+    column_index = valid_columns.index(input.upcase)
+    @board.make_move(column_index, @player)
+  end
+
 
   def computer_move
     phrases = ["My turn!"  "GIT-Wrecked", "You will never beat me - HAHAHA", "DRAT!" "I will gIt YOUUU"]
@@ -83,6 +96,10 @@ class Game
     else
       puts "DRAW - You didn't LOOSE but you didn't win either! I guess I can live with that.... "
     end
+  end
+
+  def game_over?
+    board.connect4?(player_marker) || board.connect4?(computer_marker) || board.board_full?
   end
 
 
@@ -125,4 +142,5 @@ class Game
       play_again
     end
   end
-end 
+
+  
