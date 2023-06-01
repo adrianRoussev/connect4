@@ -1,5 +1,5 @@
 require 'pry'
-require './board'
+require './lib/board'
 
 
 RSpec.describe Board do 
