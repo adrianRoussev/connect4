@@ -1,6 +1,9 @@
-class Turn 
 
-attr_reader :player,  :board  
+require './board.rb'
+
+
+class Turn 
+    attr_reader :player, :column_input, :board  
 
 def initialize( board)
 
@@ -8,7 +11,6 @@ def initialize( board)
   end 
 
 
-  
 
   def get_move_with_input(input)
     #This is a method for test purposes, testing gets.chomp was quite difficult.
