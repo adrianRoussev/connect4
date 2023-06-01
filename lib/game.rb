@@ -6,6 +6,10 @@ class Game
     @board = Board.new
     @turn = :X
     @start = true 
+    @board = Board.new
+    @player_marker = nil
+    @computer_marker = nil
+    @scores = []
   end
 
   def greeting 
@@ -20,6 +24,21 @@ class Game
   def switch_turn
     @turn = (@turn == :X) ? :O : :X
   end
+
+  def choose_marker
+    loop do
+      print "Choose your marker (X or O): "
+      marker = gets.chomp.upcase
+      marker_strings = ["X", "O"]
+      if marker_strings.include?(marker)
+        @player_marker = marker.to_sym
+        @computer_marker = (marker == 'X' ? 'O' : 'X').to_sym
+        break
+      else
+        puts "Invalid marker. Please choose 'X' or 'O'."
+      end
+    end
+  en
 
 
   def print_board
@@ -45,8 +64,21 @@ class Game
     output
   end
 
+
+  def computer_move
+    phrases = ["My turn!"  "GIT-Wrecked", "You will never beat me - HAHAHA", "DRAT!" "I will gIt YOUUU"]
+    print phrases[rand(4)]
+    move = turn.new(board)
+    selected_move = move.make_turn(computer_marker)
+    board.make_move(selected_move, computer_marker)
+  end
+
+  
+
   def play
     greeting
+    choose_marker
+    puts "You are playing as '#{player_marker}'. Make your move by entering the column number (0-6)."
     while true
       system("clear")
       puts print_board

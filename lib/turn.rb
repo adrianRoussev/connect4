@@ -9,7 +9,6 @@ class Turn
   end 
 
 
-
   def get_move
     valid_columns = ("A".."G").to_a
     "#{player}, it's your turn. Enter a column (A-G) to make your move:"
@@ -30,14 +29,14 @@ class Turn
     valid_columns = ('A'..'G').to_a
   
     until input.is_a?(String) && valid_columns.include?(input.upcase)
-      return "Invalid column."
+        return "Invalid column."
     end
     
 
     column_index = valid_columns.index(input.upcase)
     @board.make_move(column_index, @player) 
-    end 
-
+    end
+    
     def make_turn(marker)
         best_move = predict_best_move(marker)
         board.make_move(best_move, marker)
@@ -90,3 +89,4 @@ class Turn
         end
     end
 end
+
