@@ -27,10 +27,12 @@ def initialize( board)
     @board.make_move(column_index, @player) 
     end
     
-    def make_turn(marker)
-        best_move = predict_best_move(marker)
-        board.make_move(best_move, marker)
-    end
+    def make_turn
+        column = predict_best_move(marker)
+        board.make_move(column, marker)
+        column
+      end
+      
 
     def predict_best_move(marker)
         available_moves = (0..6).to_a.select { |column| board.valid_move?(column) }
