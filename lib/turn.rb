@@ -1,10 +1,9 @@
 class Turn 
 
-  attr_reader :player, :column_input, :board  
+attr_reader :player,  :board  
 
-  def initialize(player, board)
-    @player = player 
-    @column_input = nil
+def initialize( board)
+
     @board = board
   end 
 
