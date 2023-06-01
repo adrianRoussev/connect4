@@ -139,12 +139,10 @@ class Board
 
 
             def valid_move?(column)
-                column.between?(0, 6) && !column_full?(column)
-            end
+                @current_position_ar[column] <= @final_position_ar[column]
+              end
             
-            def column_full?(column)
-               current_position_ar[column] > final_position_ar[column]
-            end
+            
 
         end
 
