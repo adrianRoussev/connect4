@@ -15,9 +15,9 @@ class Game
     @start ? (@start = false; "Welcome to Connect 4!") : nil
   end  
 
-  # def create_turn
-  #   Turn.new(@turn, @board)
-  # end
+  def create_turn
+    Turn.new(@turn, @board)
+  end
   
 
   def switch_turn
@@ -143,4 +143,27 @@ class Game
     end
   end
 
-  
+  def update_scores
+    winner = nil
+
+    if board.connect4?(player_marker)
+      winner = 'Player'
+    elsif board.connect4?(computer_marker)
+      winner = 'Computer'
+    end
+
+    scores << { winner: winner, timestamp: Time.now }
+  end
+
+  def show_high_scores
+    puts "High Scores:"
+    if scores.empty?
+      puts "No scores recorded yet."
+    else
+      scores.each_with_index do |score, index|
+        puts "#{index + 1}. #{score[:winner]} - #{score[:timestamp]}"
+      end
+    end
+    puts
+  end
+end
