@@ -66,11 +66,11 @@ class Game
     puts "X, it's your turn."
     input = gets.chomp.upcase
     valid_columns = ("A".."G").to_a
-    column = valid_columns.index(input)
-    if @board.current_position_ar.fetch(column) == @board.final_position_ar.fetch(column)  
-      puts "Invalid column. Please enter a column (A-G):"
-      input = gets.chomp.upcase
-    end
+    # column = valid_columns.index(input)
+    # if @board.current_position_ar.fetch(column) == @board.final_position_ar.fetch(column)  
+    #   puts "Invalid column. Please enter a column (A-G):"
+    #   input = gets.chomp.upcase
+    # end
     until input.is_a?(String) && valid_columns.include?(input.upcase)
       puts "Invalid column. Please enter a column (A-G):"
       input = gets.chomp.upcase
@@ -114,7 +114,7 @@ if game_over?
 def round
     @board = Board.new
   greeting
-    
+  system 'clear'
   puts print_board
     puts "You will never beat me..."
     sleep(2)
@@ -147,14 +147,13 @@ def round
   end
 
   def computer_turn
-    system 'clear'
   print_board
-    computer_move
+  computer_move
     sleep(2)
   end
 
 def player_turn
-    system 'clear'
+  
   print_board
     player_move
     sleep(2)
@@ -167,7 +166,7 @@ def player_turn
 
     if input == "Y"
       @board = Board.new
-      @turn = @next_start_player
+      
       @start = true
       play
     elsif input == "N"
